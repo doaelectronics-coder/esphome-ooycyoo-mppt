@@ -118,3 +118,9 @@ Developed and tested with ESPHome 2026.8.2.
 ## License
 
 [MIT](LICENSE).
+
+## Support
+
+If this saved you some reverse-engineering, you can
+[buy me a coffee on Ko-fi](https://ko-fi.com/cboxde). Donations are a
+thank-you, not a support contract, and do not change the disclaimer above.
