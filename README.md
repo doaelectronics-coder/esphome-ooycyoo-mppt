@@ -29,7 +29,7 @@ transceiver per controller.
 
 | RJ45 pin | Usual wire colour | Signal |
 |---|---|---|
-| 1, 2, 3 | | **+12 V** |
+| 1, 2, 3 | | **+12 V**, appear common |
 | 4 | blue | RS485 **A (+)** |
 | 5 | blue/white | RS485 **B (-)** |
 | 6, 7, 8 | | Ground (-), all common |
@@ -38,6 +38,9 @@ Only pins 4 and 5 carry data. Connect them to the transceiver's A and B
 terminals and nothing else.
 
 Pins 6, 7 and 8 are all connected together, so one ground wire is enough.
+Pins 1-3 appear to be joined inside the original remote display, and tying
+them together made no difference. The bridge does not use them: with only A,
+B and one ground connected, the controller answers every poll.
 
 In the tested setup, the controller's ground was wired to the GND
 terminal on the RS485 side of the transceiver module (a MAX485-based
