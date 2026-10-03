@@ -103,6 +103,15 @@ the empty `sensor:`, `binary_sensor:`, `switch:`, `button:` and `number:`
 sections from the example. [example.yaml](example.yaml) is a complete
 two-controller configuration.
 
+### Ready-made bundle
+
+Each [release](https://github.com/doaelectronics-coder/esphome-ooycyoo-mppt/releases)
+has an `ooycyoo-mppt-bundle-<version>.tar.gz` made with `esphome bundle`. It
+holds `example.yaml` with the component included as a local source, so it
+builds without fetching from GitHub, plus a `secrets.yaml` with placeholders
+only. Fill in your Wi-Fi and pins before compiling. To build one yourself, run
+`scripts/make_bundle.sh <output.tar.gz>` with ESPHome installed.
+
 ### Options per controller
 
 | Option | Meaning |
