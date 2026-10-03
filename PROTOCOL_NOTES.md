@@ -6,8 +6,9 @@
 - UART connects to a 7LB184 half-duplex RS485 transceiver.
 - RJ45 port: pin 4 (blue) is RS485 A(+), pin 5 (blue/white) is RS485 B(-).
   Pins 1-3 carry +12 V and pins 6-8 are ground. Only pins 4 and 5 carry data.
-  Tested wiring: controller ground to the transceiver's RS485-side GND, not
-  common with the ESP32 ground.
+  Tested wiring: controller ground to the RS485-side GND of a MAX485-based
+  auto-direction module, with no separate wire to the ESP32 ground. The
+  module's isolation is unknown.
 - Display polls at approximately `0.84 s`.
 - Frame: `0x55`, 30-byte payload, one checksum byte.
 - Checksum: sum of the 30 payload bytes modulo 256. The `0x55` header is not

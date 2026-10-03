@@ -37,10 +37,14 @@ transceiver per controller.
 Only pins 4 and 5 carry data. Connect them to the transceiver's A and B
 terminals and nothing else.
 
-In the tested setup, the controller's ground (pins 6-8) was connected to the
-GND terminal on the RS485 side of the transceiver module. It was **not**
-common with the ESP32's ground. On a non-isolated module the RS485-side GND
-and the logic-side GND are the same, so this setup does not carry over to one.
+In the tested setup, the controller's ground (pins 6-8) was wired to the GND
+terminal on the RS485 side of the transceiver module (a MAX485-based
+auto-direction board), and no separate wire ran from the controller's ground
+to the ESP32. Whether the two grounds are really separate depends on the
+module: the MAX485 itself is not isolated, so on most such boards the
+RS485-side GND and the TTL-side GND are joined on the board. To check yours,
+measure continuity between the two GND terminals. If it beeps, the controller
+and ESP32 share a ground through the module.
 
 > **Warning: 12 V on the port.** Pins 1-3 carry about 12 V. Never connect any
 > pin other than 4 and 5 to the transceiver's A/B terminals or to an ESP32
