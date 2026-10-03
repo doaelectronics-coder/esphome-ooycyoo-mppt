@@ -18,12 +18,51 @@ transceiver per controller.
 > Never rely on it in place of the controller's, battery's or BMS's own
 > protections.
 
+> [!IMPORTANT]
+> **The bridge does nothing until you set `poll_enabled: true`.** Every
+> controller starts with `poll_enabled: false`, so it never talks to the
+> controller and all readings stay empty. Once the wiring and settings are
+> checked, change it to `true` for each controller and flash again. See
+> [Safety: polling starts off](#safety-polling-starts-off).
+
 ## Hardware
 
 - The controller's remote-display port: `9600 8N1` over half-duplex RS485.
   See [PROTOCOL_NOTES.md](PROTOCOL_NOTES.md).
 - An ESP32 (the example uses `esp32dev`).
 - One automatic-direction RS485 transceiver module per controller.
+
+### Controller RJ45 pinout
+
+| RJ45 pin | Usual wire colour | Signal |
+|---|---|---|
+| 1, 2, 3 | | **+12 V**, appear common |
+| 4 | blue | RS485 **A (+)** |
+| 5 | blue/white | RS485 **B (-)** |
+| 6, 7, 8 | | Ground (-), all common |
+
+Only pins 4 and 5 carry data. Connect them to the transceiver's A and B
+terminals and nothing else.
+
+Pins 6, 7 and 8 are all connected together, so one ground wire is enough.
+Pins 1-3 appear to be joined inside the original remote display, and tying
+them together made no difference. The bridge does not use them: with only A,
+B and one ground connected, the controller answers every poll.
+
+In the tested setup, the controller's ground was wired to the GND
+terminal on the RS485 side of the transceiver module (a MAX485-based
+auto-direction board), and no separate wire ran from the controller's ground
+to the ESP32. Whether the two grounds are really separate depends on the
+module: the MAX485 itself is not isolated, so on most such boards the
+RS485-side GND and the TTL-side GND are joined on the board. To check yours,
+measure continuity between the two GND terminals. If it beeps, the controller
+and ESP32 share a ground through the module.
+
+> **Warning: 12 V on the port.** Pins 1-3 carry about 12 V. Never connect any
+> pin other than 4 and 5 to the transceiver's A/B terminals or to an ESP32
+> GPIO, as this can destroy the transceiver and the ESP32. Check with a
+> multimeter before connecting anything, because cable colours vary and a
+> crossed or non-standard cable moves the pins.
 
 The GPIO pins in [example.yaml](example.yaml) are examples. Change them to
 match your wiring.
@@ -40,6 +79,10 @@ the bridge does too. Each controller block therefore starts with
 4. Compile and flash with `poll_enabled: false`.
 5. Check the wiring and settings, then set `poll_enabled: true` and flash
    again.
+
+> [!IMPORTANT]
+> **Step 5 is required. With `poll_enabled: false` the bridge never polls, so
+> nothing is read or controlled.**
 
 On its first boot with polling on, the bridge **adopts the controller's own
 settings** once three replies agree. The YAML values are only placeholders
@@ -59,6 +102,16 @@ ESPHome needs the entity domains the component creates to be loaded, so keep
 the empty `sensor:`, `binary_sensor:`, `switch:`, `button:` and `number:`
 sections from the example. [example.yaml](example.yaml) is a complete
 two-controller configuration.
+
+### Ready-made bundle
+
+[`ooycyoo-mppt-bundle.tar.gz`](ooycyoo-mppt-bundle.tar.gz) in the repo root
+is made with `esphome bundle`, and each
+[release](https://github.com/doaelectronics-coder/esphome-ooycyoo-mppt/releases)
+also has a copy. It holds `example.yaml` with the component included as a local source, so it
+builds without fetching from GitHub, plus a `secrets.yaml` with placeholders
+only. Fill in your Wi-Fi and pins before compiling. To build one yourself, run
+`scripts/make_bundle.sh <output.tar.gz>` with ESPHome installed.
 
 ### Options per controller
 

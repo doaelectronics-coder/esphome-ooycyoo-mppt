@@ -57,6 +57,7 @@ ooycyoo_mppt:
   - id: mppt_1
     uart_id: mppt_1_uart
     # Safety default: keep false until settings and wiring have been verified.
+    # CHANGE TO true WHEN READY: nothing is polled or read while this is false.
     poll_enabled: false
     # Resend the requested settings when the controller is out of sync.
     auto_resync: true
@@ -132,6 +133,7 @@ ooycyoo_mppt:
   - id: mppt_2
     uart_id: mppt_2_uart
     # Safety default: keep false until settings and wiring have been verified.
+    # CHANGE TO true WHEN READY: nothing is polled or read while this is false.
     poll_enabled: false
     # Resend the requested settings when the controller is out of sync.
     auto_resync: true
