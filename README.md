@@ -25,6 +25,24 @@ transceiver per controller.
 - An ESP32 (the example uses `esp32dev`).
 - One automatic-direction RS485 transceiver module per controller.
 
+### Controller RJ45 pinout
+
+| RJ45 pin | Usual wire colour | Signal |
+|---|---|---|
+| 1, 2, 3 | | **+12 V** |
+| 4 | blue | RS485 **A (+)** |
+| 5 | blue/white | RS485 **B (-)** |
+| 6, 7, 8 | | Ground (-) |
+
+Only pins 4 and 5 carry data. Connect them to the transceiver's A and B
+terminals and nothing else.
+
+> **Warning: 12 V on the port.** Pins 1-3 carry about 12 V. Never connect any
+> pin other than 4 and 5 to the transceiver's A/B terminals or to an ESP32
+> GPIO, as this can destroy the transceiver and the ESP32. Check with a
+> multimeter before connecting anything, because cable colours vary and a
+> crossed or non-standard cable moves the pins.
+
 The GPIO pins in [example.yaml](example.yaml) are examples. Change them to
 match your wiring.
 
