@@ -18,6 +18,13 @@ transceiver per controller.
 > Never rely on it in place of the controller's, battery's or BMS's own
 > protections.
 
+> [!IMPORTANT]
+> **The bridge does nothing until you set `poll_enabled: true`.** Every
+> controller starts with `poll_enabled: false`, so it never talks to the
+> controller and all readings stay empty. Once the wiring and settings are
+> checked, change it to `true` for each controller and flash again. See
+> [Safety: polling starts off](#safety-polling-starts-off).
+
 ## Hardware
 
 - The controller's remote-display port: `9600 8N1` over half-duplex RS485.
@@ -72,6 +79,10 @@ the bridge does too. Each controller block therefore starts with
 4. Compile and flash with `poll_enabled: false`.
 5. Check the wiring and settings, then set `poll_enabled: true` and flash
    again.
+
+> [!IMPORTANT]
+> **Step 5 is required. With `poll_enabled: false` the bridge never polls, so
+> nothing is read or controlled.**
 
 On its first boot with polling on, the bridge **adopts the controller's own
 settings** once three replies agree. The YAML values are only placeholders
