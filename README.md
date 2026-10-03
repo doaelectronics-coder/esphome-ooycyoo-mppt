@@ -37,6 +37,11 @@ transceiver per controller.
 Only pins 4 and 5 carry data. Connect them to the transceiver's A and B
 terminals and nothing else.
 
+In the tested setup, the controller's ground (pins 6-8) was connected to the
+GND terminal on the RS485 side of the transceiver module. It was **not**
+common with the ESP32's ground. On a non-isolated module the RS485-side GND
+and the logic-side GND are the same, so this setup does not carry over to one.
+
 > **Warning: 12 V on the port.** Pins 1-3 carry about 12 V. Never connect any
 > pin other than 4 and 5 to the transceiver's A/B terminals or to an ESP32
 > GPIO, as this can destroy the transceiver and the ESP32. Check with a
