@@ -1,0 +1,203 @@
+substitutions:
+  device_name: ooycyoo-mppt-bridge
+  friendly_name: OOYCYOO MPPT Bridge
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+  baud_rate: 0
+
+# Explicitly load the domains used by the external component.
+sensor:
+binary_sensor:
+switch:
+button:
+number:
+
+api:
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+external_components:
+  - source: github://doaelectronics-coder/esphome-ooycyoo-mppt@main
+    components: [ooycyoo_mppt]
+  # To use a local checkout instead:
+  # - source:
+  #     type: local
+  #     path: components
+
+# Use one UART and one automatic-direction RS485 transceiver per controller.
+# These GPIO assignments are examples and must match the physical ESP32 wiring.
+uart:
+  - id: mppt_1_uart
+    tx_pin: GPIO17
+    rx_pin: GPIO16
+    baud_rate: 9600
+    parity: NONE
+    stop_bits: 1
+  - id: mppt_2_uart
+    tx_pin: GPIO26
+    rx_pin: GPIO27
+    baud_rate: 9600
+    parity: NONE
+    stop_bits: 1
+
+ooycyoo_mppt:
+  - id: mppt_1
+    uart_id: mppt_1_uart
+    # Safety default: keep false until settings and wiring have been verified.
+    poll_enabled: false
+    # Resend the requested settings when the controller is out of sync.
+    auto_resync: true
+    # Factory-reset values as placeholders: on first boot the bridge adopts the controller's own
+    # settings. Enter your display's values here before enabling polling.
+    pv_off_voltage: 13.8
+    load_off_voltage: 10.7
+    load_on_voltage: 12.6
+    evening_hours: 24
+    interval_hours: 0
+    dawn_hours: 0
+    pv_voltage:
+      name: "MPPT 1 PV Voltage"
+    pv_current:
+      name: "MPPT 1 Estimated PV Current"
+    solar_power:
+      name: "MPPT 1 Estimated Solar Power"
+    battery_voltage:
+      name: "MPPT 1 Battery Voltage"
+    battery_current:
+      name: "MPPT 1 Charging Current"
+    battery_charging_power:
+      name: "MPPT 1 Battery Charging Power"
+    battery_temperature:
+      name: "MPPT 1 Battery Temperature"
+    battery_percent:
+      name: "MPPT 1 Estimated Battery Percent"
+    load_voltage:
+      name: "MPPT 1 Load Voltage"
+    load_current:
+      name: "MPPT 1 Load Current"
+    total_energy:
+      name: "MPPT 1 Total Energy"
+    pv_off_voltage_feedback:
+      name: "MPPT 1 Controller PV Off Voltage"
+    load_off_voltage_feedback:
+      name: "MPPT 1 Controller Load Off Voltage"
+    load_on_voltage_feedback:
+      name: "MPPT 1 Controller Load On Voltage"
+    evening_hours_feedback:
+      name: "MPPT 1 Controller Evening Hours"
+    interval_hours_feedback:
+      name: "MPPT 1 Controller Interval Hours"
+    dawn_hours_feedback:
+      name: "MPPT 1 Controller Dawn Hours"
+    load_path_fault:
+      name: "MPPT 1 Load Path Fault"
+    charge_path_fault:
+      name: "MPPT 1 Charge Path Fault"
+    settings_acknowledged:
+      name: "MPPT 1 Settings Acknowledged"
+    setting_update_pending:
+      name: "MPPT 1 Setting Update Pending"
+    setting_write_attempts:
+      name: "MPPT 1 Setting Write Attempts"
+    load_switch:
+      name: "MPPT 1 DC Load"
+    reset_button:
+      name: "MPPT 1 Reset Settings"
+    pv_off_number:
+      name: "MPPT 1 Requested PV Off Voltage"
+    load_off_number:
+      name: "MPPT 1 Requested Load Off Voltage"
+    load_on_number:
+      name: "MPPT 1 Requested Load On Voltage"
+    evening_number:
+      name: "MPPT 1 Requested Evening Hours"
+    interval_number:
+      name: "MPPT 1 Requested Interval Hours"
+    dawn_number:
+      name: "MPPT 1 Requested Dawn Hours"
+
+  - id: mppt_2
+    uart_id: mppt_2_uart
+    # Safety default: keep false until settings and wiring have been verified.
+    poll_enabled: false
+    # Resend the requested settings when the controller is out of sync.
+    auto_resync: true
+    pv_off_voltage: 13.8
+    load_off_voltage: 10.7
+    load_on_voltage: 12.6
+    evening_hours: 24
+    interval_hours: 0
+    dawn_hours: 0
+    pv_voltage:
+      name: "MPPT 2 PV Voltage"
+    pv_current:
+      name: "MPPT 2 Estimated PV Current"
+    solar_power:
+      name: "MPPT 2 Estimated Solar Power"
+    battery_voltage:
+      name: "MPPT 2 Battery Voltage"
+    battery_current:
+      name: "MPPT 2 Charging Current"
+    battery_charging_power:
+      name: "MPPT 2 Battery Charging Power"
+    battery_temperature:
+      name: "MPPT 2 Battery Temperature"
+    battery_percent:
+      name: "MPPT 2 Estimated Battery Percent"
+    load_voltage:
+      name: "MPPT 2 Load Voltage"
+    load_current:
+      name: "MPPT 2 Load Current"
+    total_energy:
+      name: "MPPT 2 Total Energy"
+    pv_off_voltage_feedback:
+      name: "MPPT 2 Controller PV Off Voltage"
+    load_off_voltage_feedback:
+      name: "MPPT 2 Controller Load Off Voltage"
+    load_on_voltage_feedback:
+      name: "MPPT 2 Controller Load On Voltage"
+    evening_hours_feedback:
+      name: "MPPT 2 Controller Evening Hours"
+    interval_hours_feedback:
+      name: "MPPT 2 Controller Interval Hours"
+    dawn_hours_feedback:
+      name: "MPPT 2 Controller Dawn Hours"
+    load_path_fault:
+      name: "MPPT 2 Load Path Fault"
+    charge_path_fault:
+      name: "MPPT 2 Charge Path Fault"
+    settings_acknowledged:
+      name: "MPPT 2 Settings Acknowledged"
+    setting_update_pending:
+      name: "MPPT 2 Setting Update Pending"
+    setting_write_attempts:
+      name: "MPPT 2 Setting Write Attempts"
+    load_switch:
+      name: "MPPT 2 DC Load"
+    reset_button:
+      name: "MPPT 2 Reset Settings"
+    pv_off_number:
+      name: "MPPT 2 Requested PV Off Voltage"
+    load_off_number:
+      name: "MPPT 2 Requested Load Off Voltage"
+    load_on_number:
+      name: "MPPT 2 Requested Load On Voltage"
+    evening_number:
+      name: "MPPT 2 Requested Evening Hours"
+    interval_number:
+      name: "MPPT 2 Requested Interval Hours"
+    dawn_number:
+      name: "MPPT 2 Requested Dawn Hours"

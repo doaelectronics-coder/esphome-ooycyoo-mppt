@@ -1,0 +1,15 @@
+name: Host test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  host-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run host test
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Itests/stubs -Icomponents tests/host_sync_test.cpp -o host_test
+          ./host_test
