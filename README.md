@@ -32,12 +32,14 @@ transceiver per controller.
 | 1, 2, 3 | | **+12 V** |
 | 4 | blue | RS485 **A (+)** |
 | 5 | blue/white | RS485 **B (-)** |
-| 6, 7, 8 | | Ground (-) |
+| 6, 7, 8 | | Ground (-), all common |
 
 Only pins 4 and 5 carry data. Connect them to the transceiver's A and B
 terminals and nothing else.
 
-In the tested setup, the controller's ground (pins 6-8) was wired to the GND
+Pins 6, 7 and 8 are all connected together, so one ground wire is enough.
+
+In the tested setup, the controller's ground was wired to the GND
 terminal on the RS485 side of the transceiver module (a MAX485-based
 auto-direction board), and no separate wire ran from the controller's ground
 to the ESP32. Whether the two grounds are really separate depends on the
